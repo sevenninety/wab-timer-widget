@@ -1,0 +1,12 @@
+.timer .timer-container {
+  background-color: rgba(0,0,0,0.5);
+  padding: 5px;
+}
+
+.timer .timer-container > div {
+  color: #fff;
+}
+
+.timer .hidden {
+  display: none;
+}
