@@ -93,7 +93,7 @@ define(
 
       _addToQueue: function(val, queue) {
         // Check we are not exceeding queue length
-        if (queue.length < this._maxQueueLength) {
+        if (queue.length <= this._maxQueueLength) {
           queue.push(val);
         } else {
           // Remove first value then add new value
