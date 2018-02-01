@@ -51,13 +51,13 @@ define(
 
         // Show average
         this.perfstatAvgZoom.innerHTML =
-          this.nls.avgZoom +
+          this.nls.avg +
           " " +
           this._getAverage(this._zooms).toFixed(4) +
           " " +
           this.nls.unit;
       },
-
+      
       _onUpdateStart: function() {
         this._updateStart = performance.now();
       },
@@ -84,7 +84,7 @@ define(
 
         // Show average
         this.perfstatAvgUpdate.innerHTML =
-          this.nls.avgUpdate +
+          this.nls.avg +
           " " +
           this._getAverage(this._updates).toFixed(4) +
           " " +
@@ -101,7 +101,7 @@ define(
           queue.push(val);
         }
       },
-
+      
       _getAverage: function(queue) {
         // Sum times
         var sum = queue.reduce(function(a, b) {
