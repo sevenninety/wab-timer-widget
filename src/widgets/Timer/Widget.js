@@ -12,20 +12,24 @@ define(
 
       _zooms: [],
       _updates: [],
+      _maxQueueLength: 10,
 
       startup: function() {
         this.inherited(arguments);
-        this.bindEvents();
+        this._bindEvents();
       },
 
-      bindEvents: function() {
+      _bindEvents: function() {
         this.own(
           on(this.map, "zoom-start", lang.hitch(this, this._onZoomStart))
         );
+
         this.own(on(this.map, "zoom-end", lang.hitch(this, this._onZoomEnd)));
+
         this.own(
           on(this.map, "update-start", lang.hitch(this, this._onUpdateStart))
         );
+
         this.own(
           on(this.map, "update-end", lang.hitch(this, this._onUpdateEnd))
         );
@@ -39,15 +43,19 @@ define(
         this._zoomEnd = performance.now();
 
         var time = this._zoomEnd - this._zoomStart;
-        this._addToList(time, this._zooms);
+        this._addToQueue(time, this._zooms);
 
         // Show zoom time
-        this.perfstatZoom.innerHTML = "Last Zoom " + time.toFixed(4) + " ms.";
+        this.perfstatZoom.innerHTML =
+          this.nls.zoom + " " + time.toFixed(4) + " " + this.nls.unit;
 
+        // Show average
         this.perfstatAvgZoom.innerHTML =
-          "Avg Last 10 Zooms " +
+          this.nls.avgZoom +
+          " " +
           this._getAverage(this._zooms).toFixed(4) +
-          " ms.";
+          " " +
+          this.nls.unit;
       },
 
       _onUpdateStart: function() {
@@ -58,42 +66,50 @@ define(
         this._updateEnd = performance.now();
         var time = this._updateEnd - this._updateStart;
 
+        // Check we have a number
         if (isNaN(time)) {
           return;
         }
 
-        this._addToList(time, this._updates);
-
+        // Make sure UI is not shown unless we have data
         if (domClass.contains(this.perfstats, "hidden")) {
           domClass.remove(this.perfstats, "hidden");
         }
 
-        // Show zoom time
-        this.perfstatUpdate.innerHTML =
-          "Last Update " + time.toFixed(4) + " ms.";
+        this._addToQueue(time, this._updates);
 
+        // Show update time
+        this.perfstatUpdate.innerHTML =
+          this.nls.update + " " + time.toFixed(4) + " " + this.nls.unit;
+
+        // Show average
         this.perfstatAvgUpdate.innerHTML =
-          "Avg Last 10 Updates " +
+          this.nls.avgUpdate +
+          " " +
           this._getAverage(this._updates).toFixed(4) +
-          " ms.";
+          " " +
+          this.nls.unit;
       },
 
-      _addToList: function(val, list) {
-        if (list.length < 10) {
-          list.push(val);
+      _addToQueue: function(val, queue) {
+        // Check we are not exceeding queue length
+        if (queue.length < this._maxQueueLength) {
+          queue.push(val);
         } else {
-          list.shift();
-          list.push(val);
+          // Remove first value then add new value
+          queue.shift();
+          queue.push(val);
         }
       },
 
-      _getAverage: function(list) {
-        var sum = list.reduce(function(a, b) {
+      _getAverage: function(queue) {
+        // Sum times
+        var sum = queue.reduce(function(a, b) {
           return a + b;
         });
-        var avg = sum / list.length;
 
-        return avg;
+        // Return average
+        return sum / queue.length;
       }
     });
   }

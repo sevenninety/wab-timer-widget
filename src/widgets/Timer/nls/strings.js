@@ -1,9 +1,9 @@
 define({
   root: {
-    widgetTitle: 'Timer',
-    description: 'A performance timing widget',
-    operations: {
-      zoom: 'Zoom'
-    }
+    zoom: "Zoom",
+    avgZoom: "Avg Last 10 Zooms",
+    update: "Update",
+    avgUpdate: "Avg Last 10 Updates",
+    unit: "ms"
   }
 });
