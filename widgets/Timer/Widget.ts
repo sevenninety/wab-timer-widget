@@ -46,7 +46,7 @@ class Widget {
         this.bindEvents();
     }
 
-    bindEvents(): void {
+    private bindEvents(): void {
         let self: any = this;
 
         self.own(
@@ -64,11 +64,11 @@ class Widget {
         );
     }
 
-    onZoomStart(): void {
+    private onZoomStart(): void {
         this.zoomStart = performance.now();
     }
 
-    onZoomEnd(): void {
+    private onZoomEnd(): void {
         let time: number = performance.now() - this.zoomStart;
 
         // Store value
@@ -81,11 +81,11 @@ class Widget {
         this.perfstatAvgZoom.innerHTML = `${this.nls.avg} ${this.getAverage(this.zooms).toFixed(4)} ${this.nls.unit}`;
     }
 
-    onUpdateStart(): void {
+    private onUpdateStart(): void {
         this.updateStart = performance.now();
     }
 
-    onUpdateEnd(): void {
+    private onUpdateEnd(): void {
         let time: number = performance.now() - this.updateStart;
 
         // Check we have a number
@@ -121,7 +121,7 @@ class Widget {
 
     private getAverage(queue: number[]): number {
         // Sum times
-        let sum:number = queue.reduce(function(a: number, b: number) {
+        let sum: number = queue.reduce((a: number, b: number) => {
             return a + b;
         });
 
