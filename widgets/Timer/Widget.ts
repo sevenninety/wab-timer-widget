@@ -1,5 +1,5 @@
 /// <amd-dependency path="jimu/BaseWidget" name="BaseWidget" />
-declare var BaseWidget: any; // there is no ts definition of BaseWidget yet
+declare const BaseWidget: any; // there is no ts definition of BaseWidget yet
 
 import declare from "./support/declareDecorator";
 
