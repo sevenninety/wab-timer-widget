@@ -1,8 +1,6 @@
-define({
-  root: {
+export const root = {
     zoom: "Zoom",
     update: "Update",
-    avg: "Avg",    
+    avg: "Avg",
     unit: "ms"
-  }
-});
+};
