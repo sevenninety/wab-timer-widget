@@ -9,18 +9,21 @@ import * as domClass from "dojo/dom-class";
 
 import Map = require("esri/map");
 
-// Define interface for config
+// Define interface for widget config
 interface Config {
     maxQueueLength: number;
 }
 
-// Define interface for
+// Define interface for our widget
 interface Widget {
+    // Widget UI properties
     perfstats: HTMLElement;
     perfstatZoom: HTMLElement;
     perfstatAvgZoom: HTMLElement;
     perfstatUpdate: HTMLElement;
     perfstatAvgUpdate: HTMLElement;
+
+    // Standard widget properties
     baseClass: string;
     config: Config;
     nls: any;
@@ -108,6 +111,11 @@ class Widget {
         this.perfstatAvgUpdate.innerHTML = `${this.nls.avg} ${this.getAverage(this.updates).toFixed(4)} ${this.nls.unit}`;
     }
 
+    /**
+     * Adds a time value to a fixed length queue.
+     * @param time the time to add
+     * @param queue the queue
+     */
     private addToQueue(time: number, queue: number[]): void {
         // Check we are not exceeding queue length
         if (queue.length <= this.config.maxQueueLength) {
@@ -119,6 +127,10 @@ class Widget {
         }
     }
 
+    /**
+     * Gets the average of a list of numbers.
+     * @param queue the list
+     */
     private getAverage(queue: number[]): number {
         // Sum times
         let sum: number = queue.reduce((a: number, b: number) => {
