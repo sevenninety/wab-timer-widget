@@ -1,11 +1,4 @@
-interface IModel {
-    zooms: number[];
-    updates: number[];
-    addToQueue(time: number, queue: number[]): void;
-    getAverage(queue: number[]): number;
-}
-
-class Model implements IModel {
+class Model {
     zooms: number[] = [];
     updates: number[] = [];
     private maxQueueLength: number;
