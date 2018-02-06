@@ -2,6 +2,7 @@
 declare const BaseWidget: any; // there is no ts definition of BaseWidget yet
 
 import declare from "./support/declareDecorator";
+import Model from "./Model";
 
 import * as lang from "dojo/_base/lang";
 import * as on from "dojo/on";
@@ -34,11 +35,19 @@ interface Widget {
 class Widget {
     // Private properties
     private zoomStart: number;
-    private zooms: number[] = [];
     private updateStart: number;
-    private updates: number[] = [];
+    private model:Model;
 
     baseClass = "timer";
+
+    postCreate(args?: any): void {
+        console.log(this.baseClass + "::postcreate");
+
+        let self: any = this;
+        self.inherited(arguments);
+
+        this.model = new Model(this.config.maxQueueLength);
+    }
 
     startup(args?: any): void {
         console.log(this.baseClass + "::startup");
@@ -75,13 +84,13 @@ class Widget {
         let time: number = performance.now() - this.zoomStart;
 
         // Store value
-        this.addToQueue(time, this.zooms);
+        this.model.addToQueue(time, this.model.zooms);
 
         // Show zoom time
         this.perfstatZoom.innerHTML = `${this.nls.zoom} ${time.toFixed(4)} ${this.nls.unit}`;
 
         // Show average
-        this.perfstatAvgZoom.innerHTML = `${this.nls.avg} ${this.getAverage(this.zooms).toFixed(4)} ${this.nls.unit}`;
+        this.perfstatAvgZoom.innerHTML = `${this.nls.avg} ${this.model.getAverage(this.model.zooms).toFixed(4)} ${this.nls.unit}`;
     }
 
     private onUpdateStart(): void {
@@ -102,43 +111,13 @@ class Widget {
         }
 
         // Store value
-        this.addToQueue(time, this.updates);
+        this.model.addToQueue(time, this.model.updates);
 
         // Show update time
         this.perfstatUpdate.innerHTML = `${this.nls.update} ${time.toFixed(4)} ${this.nls.unit}`;
 
         // Show average
-        this.perfstatAvgUpdate.innerHTML = `${this.nls.avg} ${this.getAverage(this.updates).toFixed(4)} ${this.nls.unit}`;
-    }
-
-    /**
-     * Adds a time value to a fixed length queue.
-     * @param time the time to add
-     * @param queue the queue
-     */
-    private addToQueue(time: number, queue: number[]): void {
-        // Check we are not exceeding queue length
-        if (queue.length <= this.config.maxQueueLength) {
-            queue.push(time);
-        } else {
-            // Remove first value then add new value
-            queue.shift();
-            queue.push(time);
-        }
-    }
-
-    /**
-     * Gets the average of a list of numbers.
-     * @param queue the list
-     */
-    private getAverage(queue: number[]): number {
-        // Sum times
-        let sum: number = queue.reduce((a: number, b: number) => {
-            return a + b;
-        });
-
-        // Return average
-        return sum / queue.length;
+        this.perfstatAvgUpdate.innerHTML = `${this.nls.avg} ${this.model.getAverage(this.model.updates).toFixed(4)} ${this.nls.unit}`;
     }
 }
 

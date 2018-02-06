@@ -9,15 +9,16 @@
         "experimentalDecorators": true,
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
-        "types": ["arcgis-js-api", "dojo-typings"],
+        "types": ["arcgis-js-api", "dojo-typings", "chai"],
         "rootDir": "widgets",
         "outDir": "dist/Widgets",
         "noImplicitUseStrict": true,
         "lib": ["dom", "es5", "scripthost", "es2015.promise"],
         "inlineSources": true,
-        "inlineSourceMap": true
+        "inlineSourceMap": true,
+        "removeComments": true
     },
-    "include": ["./widgets/**/*.ts"],
-    "exclude": ["node_modules"],
+    "include": ["widgets/**/*.ts"],
+    "exclude": ["node_modules", "widgets/**/*.test.ts"],
     "files": ["node_modules/dojo-typings/dojo/1.11/modules.d.ts"]
 }

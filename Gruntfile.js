@@ -6,9 +6,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-ts");
     grunt.loadNpmTasks("grunt-sass");
+    grunt.loadNpmTasks('intern');
 
-    var appDir = "C:/arcgis-web-appbuilder/arcgis-web-appbuilder-2.7/WebAppBuilderForArcGIS/server/apps/6";
-    var stemappDir = "C:/arcgis-web-appbuilder/arcgis-web-appbuilder-2.7/WebAppBuilderForArcGIS/client/stemapp";
+    var appDir =
+        "C:/arcgis-web-appbuilder/arcgis-web-appbuilder-2.7/WebAppBuilderForArcGIS/server/apps/6";
+    var stemappDir =
+        "C:/arcgis-web-appbuilder/arcgis-web-appbuilder-2.7/WebAppBuilderForArcGIS/client/stemapp";
 
     grunt.initConfig({
         sync: {
@@ -31,7 +34,7 @@ module.exports = function(grunt) {
         ts: {
             default: {
                 tsconfig: {
-                    passThrough: true
+                    passThrough : true
                 }
             }
         },
